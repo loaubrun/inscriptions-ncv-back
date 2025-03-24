@@ -1,16 +1,33 @@
-const express = require('express')
-const app = express()
+const express = require('express');
+const mysql = require('mysql2');
+const app = express();
 
-app.use(cors())
-app.use(express.json())
-app.use(express.static('build'))
+app.use(express.json());
+app.use(express.static('build'));
 
 app.get('/', (request, response) => {
-  response.send('<h1>Hello World!</h1>')
-})
-
+  response.sendFile('index.html')
+});
 
 const PORT = 3001
+
+// Create a connection to the database
+const db = mysql.createConnection({
+  host: 'localhost', // Change this to your database host
+  user: 'root', // Change this to your MySQL username
+  password: 'NCV', // Change this to your MySQL password
+  database: 'ncv-inscrits' // Change this to your database name
+});
+
+//Connect to the database
+db.connect((err) => {
+  if (err) {
+    console.error('Error connecting to the database:', err);
+    return;
+  }
+  console.log('Connected to MySQL database');
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
-})
+});
